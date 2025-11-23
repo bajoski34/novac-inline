@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makePaymentRequest } from '../utils/api';
 
 const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessing }) => {
   const [transferDetails, setTransferDetails] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    initiateBankTransfer();
-  }, []);
-
-  const initiateBankTransfer = async () => {
+  const initiateBankTransfer = useCallback(async () => {
     setIsProcessing(true);
 
     try {
@@ -42,13 +38,22 @@ const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessin
         type: 'bank_transfer_error'
       });
     }
-  };
+  }, [config, onError, setIsProcessing]);
+
+  useEffect(() => {
+    initiateBankTransfer();
+  }, [initiateBankTransfer]);
 
   const copyToClipboard = (text, field) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(field);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopied(field);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {
+        // Fallback for browsers that don't support clipboard API
+        alert('Copy failed. Please copy manually.');
+      });
   };
 
   const handleConfirmPayment = () => {

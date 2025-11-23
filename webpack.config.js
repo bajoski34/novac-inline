@@ -5,8 +5,11 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'novac-inline.js',
-    library: 'NovacInline',
-    libraryTarget: 'umd',
+    library: {
+      name: 'NovacInline',
+      type: 'umd',
+      export: 'default'
+    },
     globalObject: 'this'
   },
   module: {

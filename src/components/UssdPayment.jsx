@@ -61,7 +61,14 @@ const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
   };
 
   const copyUssdCode = () => {
-    navigator.clipboard.writeText(ussdCode);
+    navigator.clipboard.writeText(ussdCode)
+      .then(() => {
+        // Success feedback could be added here
+      })
+      .catch(() => {
+        // Fallback for browsers that don't support clipboard API
+        alert('Copy failed. Please write down the code manually.');
+      });
   };
 
   if (showCode) {
