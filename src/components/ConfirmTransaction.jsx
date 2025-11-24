@@ -1,13 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
 import { verifyPayment } from "../utils/api";
+import StatusIcon from './icons/StatusIcon';
 
-const ConfirmTransaction = ({ reference, onSuccess, time_taken, publicKey }) => {
-  // time_taken is expected in minutes; default to 0.5 minutes (30 seconds)
+const ConfirmTransaction = ({
+  reference,
+  onSuccess,
+  onError,
+  time_taken,
+  publicKey,
+  status = 'confirming',
+  title,
+  message,
+  subMessage,
+  onRetry,
+  showCloseHint = true
+}) => {
+  const normalizedStatus = ['success', 'failed'].includes(status) ? status : 'confirming';
   const initialMinutes = typeof time_taken === 'number' && time_taken > 0 ? time_taken : 0.5;
   const [remainingSeconds, setRemainingSeconds] = useState(Math.round(initialMinutes * 60));
   const pollingRef = useRef(null);
   const tickerRef = useRef(null);
   const calledSuccessRef = useRef(false);
+
+  const copy = {
+    confirming: {
+      title: title || 'Confirming your transaction...',
+      message: message || 'Please do not refresh or leave this page',
+      sub: subMessage || 'This process takes a moment while we finalize your payment.'
+    },
+    success: {
+      title: title || 'Payment Completed',
+      message: message || 'Your transaction was successful.',
+      sub: subMessage || (showCloseHint ? 'You can now securely close this tab.' : '')
+    },
+    failed: {
+      title: title || 'Payment Failed',
+      message: message || "Sorry, we can't complete your transaction at this time.",
+      sub: subMessage || (showCloseHint ? 'You can now securely close this tab.' : '')
+    }
+  }[normalizedStatus];
 
   // Helper to decide if verifyPayment response indicates success
   function isPaymentSuccessful(resp) {
@@ -24,6 +55,8 @@ const ConfirmTransaction = ({ reference, onSuccess, time_taken, publicKey }) => 
   }
 
   useEffect(() => {
+    if (normalizedStatus !== 'confirming') return () => {};
+
     let mounted = true;
 
     const stopAll = () => {
@@ -42,10 +75,19 @@ const ConfirmTransaction = ({ reference, onSuccess, time_taken, publicKey }) => 
       calledSuccessRef.current = true;
       stopAll();
       try {
-        onSuccess && onSuccess();
+        onSuccess && onSuccess({
+            reference: reference,
+            status: 'success',
+            message: 'Payment confirmed successfully'
+        });
       } catch (e) {
         // swallow user callback errors
         // eslint-disable-next-line no-console
+          onError && onError({
+              reference: reference,
+              status: 'failed',
+              message: 'onSuccess callback error'
+          })
         console.error('onSuccess callback error', e);
       }
     };
@@ -61,6 +103,11 @@ const ConfirmTransaction = ({ reference, onSuccess, time_taken, publicKey }) => 
       } catch (err) {
         // ignore transient errors - will retry
         // eslint-disable-next-line no-console
+          mounted && onError && onError({
+              reference: reference,
+              status: 'failed',
+              message: err?.message || 'verifyPayment error'
+          })
         console.warn('verifyPayment error', err?.message || err);
       }
     };
@@ -89,30 +136,47 @@ const ConfirmTransaction = ({ reference, onSuccess, time_taken, publicKey }) => 
       stopAll();
     };
 
-  }, [reference, publicKey]);
+  }, [normalizedStatus, reference, publicKey, onSuccess]);
+
+  useEffect(() => {
+    if (normalizedStatus !== 'confirming') {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+      if (tickerRef.current) clearInterval(tickerRef.current);
+    }
+  }, [normalizedStatus]);
 
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
 
   return (
-    <div className="novac-confirm-container">
-      <div className="novac-confirm-icon">
-        <img src="https://www.app.novacpayment.com/_next/static/media/loader.07fd30ec.gif" alt="Loading..." />
+    <div className={`novac-status-container status-${normalizedStatus}`}>
+      <div className="novac-status-icon">
+        <StatusIcon status={normalizedStatus} />
       </div>
-      <h2 className="novac-success-title">Confirming your transaction...</h2>
-      <p className="novac-success-message">Please do not refresh or leave this page</p>
-      <p className="novac-success-submessage">
-        This process takes about{' '}
-        {remainingSeconds > 0 ? (
-          <span>
-            {minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}
-            {minutes > 0 && seconds > 0 ? ' ' : ''}
-            {seconds > 0 ? `${seconds} second${seconds > 1 ? 's' : ''}` : ''}
-          </span>
-        ) : (
-          <span>0 seconds</span>
-        )}
-      </p>
+      <h3 className="novac-status-title">{copy.title}</h3>
+      <p className="novac-status-message">{copy.message}</p>
+      {normalizedStatus === 'confirming' ? (
+        <p className="novac-status-submessage">
+          {subMessage || 'This process takes about '}
+          {remainingSeconds > 0 ? (
+            <span>
+              {minutes > 0 ? `${minutes} minute${minutes > 1 ? 's' : ''}` : ''}
+              {minutes > 0 && seconds > 0 ? ' ' : ''}
+              {seconds > 0 ? `${seconds} second${seconds > 1 ? 's' : ''}` : ''}
+            </span>
+          ) : (
+            <span>0 seconds</span>
+          )}
+        </p>
+      ) : copy.sub ? (
+        <p className="novac-status-submessage">{copy.sub}</p>
+      ) : null}
+
+      {normalizedStatus === 'failed' && onRetry && (
+        <button type="button" className="novac-status-retry" onClick={onRetry}>
+          Try Again
+        </button>
+      )}
     </div>
   );
 };

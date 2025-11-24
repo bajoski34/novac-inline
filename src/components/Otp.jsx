@@ -41,7 +41,8 @@ const Otp = ({ config, onSuccess, onError }) => {
             };
 
             const response = await validateOtp(payload);
-            onSuccess(response);
+            console.log("OTP Validation Response:", response);
+            onSuccess(true);
         } catch (error) {
             onError({
                 message: error.message || 'Otp Validation failed.',

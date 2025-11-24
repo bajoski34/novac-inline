@@ -196,7 +196,7 @@ const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
     <div className="novac-ussd-payment">
       <div className="novac-info-box">
         <p className="novac-info-text">
-          Select your bank to generate USSD code
+          Choose your preferred bank for payment
         </p>
       </div>
 
@@ -214,21 +214,22 @@ const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
           <p className="novac-info-text">No USSD banks available for this merchant.</p>
         </div>
       ) : (
-        <div className="novac-bank-list">
-          {banks.map(bank => {
-            return (
-              <button
-                key={bank.key}
-                className={`novac-bank-item ${selectedBank === bank.key ? 'selected' : ''}`}
-                onClick={() => handleBankSelect(bank)}
-                disabled={isProcessing}
-              >
-                <span className="novac-bank-icon">🏦</span>
-                <span className="novac-bank-name">{bank.name}</span>
-              </button>
-            );
-          })}
-        </div>
+          <select
+              className="novac-bank-select"
+              value={selectedBank}
+              onChange={(e) => {
+                const bank = banks.find((b) => b.key === e.target.value);
+                if (bank) handleBankSelect(bank);
+              }}
+              disabled={isProcessing}
+          >
+            <option value="">Select a bank</option>
+            {banks.map((bank) => (
+                <option key={bank.key} value={bank.key}>
+                  {bank.name}
+                </option>
+            ))}
+          </select>
       )}
 
       {isProcessing && (

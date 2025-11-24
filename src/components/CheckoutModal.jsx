@@ -5,14 +5,13 @@ import UssdPayment from './UssdPayment';
 import { formatAmount } from '../utils/helpers';
 import {generateTransactionId, initiatePaymentRequest} from "../utils/api";
 import {Toaster} from "react-hot-toast";
-
-// https://www.app.novacpayment.com/_next/static/media/loader.07fd30ec.gif
+import ConfirmTransaction from "./ConfirmTransaction";
 
 const CheckoutModal = ({ config, onClose }) => {
   const [activeTab, setActiveTab] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [initialResponse, setInitialResponse] = useState(null);
-  // const [startVerifying, setStartVerifying] = useState(false);
+  const [startVerifying, setStartVerifying] = useState(false);
 
   const tabs = [];
   
@@ -69,12 +68,12 @@ const CheckoutModal = ({ config, onClose }) => {
     <div className="novac-modal-overlay" onClick={handleOverlayClick}>
       <div><Toaster position="top-right" /></div>
       {/* Test Environment Banner */}
-      <div className="novac-test-banner">
+      { config.publicKey.startsWith('nc_testpk_') && <div className="novac-test-banner">
         <span className="novac-test-banner-icon">⚠️</span>
         <span className="novac-test-banner-text">
             You are currently in test environment, all transactions are for testing purposes only!
           </span>
-      </div>
+      </div>}
       <div className="novac-modal">
 
         <div className="novac-modal-header" style={{ background: `${ config.customization?.background || '#EEEDFD' }`, color: `${ config.customization?.color || '#15142B' }`  }}>
@@ -93,8 +92,25 @@ const CheckoutModal = ({ config, onClose }) => {
           </button>
         </div>
 
-        <div className="novac-tabs">
-          {tabs.map(tab => (
+        {startVerifying && (
+            <ConfirmTransaction
+                reference={initialResponse?.data?.transactionReference || undefined}
+                publicKey={config.publicKey}
+                onClose={onClose}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+                time_taken={60.5}
+                onRetry={() => setStartVerifying(false)}
+            />
+        )}
+
+        {/*{initialResponse && initialResponse.data && initialResponse.data.reference && !startVerifying && (*/}
+        {/*    <div className="novac-verify-container">*/}
+        {/*      Payment Reference: <span className="novac-reference">{initialResponse.data.reference}</span> <button className="novac-verify-btn" onClick={() => setStartVerifying(true)}>Verify</button>*/}
+        {/*    </div>*/}
+        {/*)}*/}
+        {!startVerifying && ( <div className="novac-tabs">
+          { !startVerifying && tabs.map(tab => (
             <button
               key={tab.id}
               className={`novac-tab ${activeTab === tab.id ? 'active' : ''}`}
@@ -105,40 +121,41 @@ const CheckoutModal = ({ config, onClose }) => {
               <span className="novac-tab-label">{tab.label}</span>
             </button>
           ))}
-        </div>
+        </div>)}
 
-        <div className="novac-tab-content">
-          {activeTab === 'card' && (
+        { !startVerifying && <div className="novac-tab-content">
+          { !startVerifying && activeTab === 'card' && (
             <CardPayment
               config={config}
-              onSuccess={handlePaymentSuccess}
+              onSuccess={setStartVerifying}
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
               initialResponse={initialResponse}
             />
           )}
-          {activeTab === 'bank_transfer' && (
+          { !startVerifying && activeTab === 'bank_transfer' && (
             <BankTransfer
               config={config}
-              onSuccess={handlePaymentSuccess}
+              onSuccess={setStartVerifying}
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
               initialResponse={initialResponse}
             />
           )}
-          {activeTab === 'ussd' && (
+          { !startVerifying && activeTab === 'ussd' && (
             <UssdPayment
               config={config}
-              onSuccess={handlePaymentSuccess}
+              onSuccess={setStartVerifying}
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
               initialResponse={initialResponse}
             />
           )}
-        </div>
+        </div>}
+
       </div>
 
       <div className="novac-security-badge">
