@@ -177,20 +177,23 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
             <label htmlFor="cardNumber" className="novac-label">
               Card Number
             </label>
-            <input
-                type="text"
-                id="cardNumber"
-                name="cardNumber"
-                className={`novac-input ${errors.cardNumber ? 'error' : ''}`}
-                value={formData.cardNumber}
-                onChange={handleInputChange}
-                placeholder="1234 5678 9012 3456"
-                maxLength="19"
-                disabled={isProcessing}
-                autoComplete="cc-number"
-            />
+            <div className="novac-input-wrapper">
+              <span className="novac-input-icon">💳</span>
+              <input
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  className={`novac-input with-icon ${errors.cardNumber ? 'error' : ''}`}
+                  value={formData.cardNumber}
+                  onChange={handleInputChange}
+                  placeholder="0000 0000 0000 0000"
+                  maxLength="19"
+                  disabled={isProcessing}
+                  autoComplete="cc-number"
+              />
+            </div>
             {errors.cardNumber && (
-                <span className="novac-error-text">{errors.cardNumber}</span>
+                <span className="novac-error-text">Enter a valid card number</span>
             )}
           </div>
 

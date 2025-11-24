@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import CardPayment from './CardPayment';
-import Otp from './Otp';
 import BankTransfer from './BankTransfer';
 import UssdPayment from './UssdPayment';
 import { formatAmount } from '../utils/helpers';
 import {generateTransactionId, initiatePaymentRequest} from "../utils/api";
-import {toast, Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 
 // https://www.app.novacpayment.com/_next/static/media/loader.07fd30ec.gif
 
@@ -69,10 +68,19 @@ const CheckoutModal = ({ config, onClose }) => {
     <div className="novac-modal-overlay" onClick={handleOverlayClick}>
       <div><Toaster position="top-right" /></div>
       <div className="novac-modal">
+        {/* Test Environment Banner */}
+        <div className="novac-test-banner">
+          <span className="novac-test-banner-icon">⚠️</span>
+          <span className="novac-test-banner-text">
+            You are currently in test environment, all transactions are for testing purposes only!
+          </span>
+        </div>
+
         <div className="novac-modal-header">
           <div className="novac-header-content">
-            <h2 className="novac-title">Complete Payment</h2>
+            <h2 className="novac-title">Pay with Papyrus</h2>
             <p className="novac-amount">{formatAmount(config.amount, config.currency)}</p>
+            <p className="novac-email">{config.email}</p>
           </div>
           <button
             className="novac-close-btn"
@@ -82,13 +90,6 @@ const CheckoutModal = ({ config, onClose }) => {
           >
             ×
           </button>
-        </div>
-
-        <div className="novac-merchant-info">
-          <p className="novac-email">{config.email}</p>
-          {config.customerName && (
-            <p className="novac-customer-name">{config.customerName}</p>
-          )}
         </div>
 
         <div className="novac-tabs">

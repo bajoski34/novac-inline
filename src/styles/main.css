@@ -17,12 +17,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  /* Soft light-gray dotted background grid */
+  background-color: #f5f5f5;
+  background-image: 
+    radial-gradient(circle, #d0d0d0 1px, transparent 1px);
+  background-size: 20px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999999;
   animation: fadeIn 0.3s ease-in-out;
+  padding: 20px;
 }
 
 @keyframes fadeIn {
@@ -37,14 +42,15 @@
 /* Modal container */
 .novac-modal {
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   max-width: 480px;
-  width: 90%;
+  width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.3s ease-out;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  position: relative;
 }
 
 @keyframes slideUp {
@@ -58,52 +64,91 @@
   }
 }
 
+/* Test environment banner */
+.novac-test-banner {
+  background: #fff7e6;
+  border: 1px solid #f6a100;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #8b5a00;
+}
+
+.novac-test-banner-icon {
+  font-size: 18px;
+  color: #f6a100;
+  flex-shrink: 0;
+}
+
+.novac-test-banner-text {
+  line-height: 1.4;
+}
+
 /* Modal header */
 .novac-modal-header {
+  background: linear-gradient(135deg, #ff9d00 0%, #f7941d 100%);
+  border-radius: 8px 8px 0 0;
+  padding: 24px 24px 40px;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 24px 24px 16px;
-  border-bottom: 1px solid #e5e7eb;
+}
+
+.novac-modal-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
 }
 
 .novac-header-content {
   flex: 1;
+  z-index: 1;
 }
 
 .novac-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 4px;
 }
 
 .novac-amount {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  color: #9ec03a;
+  color: #1fb07f;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .novac-close-btn {
-  background: none;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
-  font-size: 32px;
-  color: #6b7280;
+  font-size: 24px;
+  color: #ffffff;
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: all 0.2s;
+  z-index: 1;
 }
 
 .novac-close-btn:hover {
-  background-color: #f3f4f6;
-  color: #111827;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .novac-close-btn:disabled {
@@ -113,58 +158,64 @@
 
 /* Merchant info */
 .novac-merchant-info {
-  padding: 16px 24px;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 24px 16px;
+  background-color: transparent;
+  border-bottom: none;
+  margin-top: -30px;
+  position: relative;
+  z-index: 2;
 }
 
 .novac-email {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0;
 }
 
 .novac-customer-name {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  color: #111827;
-  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 4px 0 0;
 }
 
 /* Tabs */
 .novac-tabs {
   display: flex;
-  border-bottom: 2px solid #e5e7eb;
-  padding: 0 24px;
+  gap: 8px;
+  padding: 16px 24px;
   background-color: #ffffff;
 }
 
 .novac-tab {
   flex: 1;
-  padding: 16px 12px;
-  border: none;
-  background: none;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  color: #6b7280;
+  color: #9ca3af;
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .novac-tab:hover {
-  color: #111827;
+  color: #6b7280;
   background-color: #f9fafb;
+  border-color: #d1d5db;
 }
 
 .novac-tab.active {
-  color: #9ec03a;
-  border-bottom-color: #9ec03a;
+  color: #4b5563;
+  background: linear-gradient(135deg, #f2f6c8 0%, #eaf1b4 100%);
+  border-color: #cddf9a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .novac-tab:disabled {
@@ -173,7 +224,7 @@
 }
 
 .novac-tab-icon {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .novac-tab-label {
@@ -206,65 +257,86 @@
 }
 
 .novac-label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: #6b7280;
+}
+
+.novac-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.novac-input-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 18px;
+  color: #9ca3af;
+  pointer-events: none;
 }
 
 .novac-input {
   padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 16px;
+  border: 2px solid #cddf9a;
+  border-radius: 6px;
+  font-size: 15px;
   color: #111827;
   transition: all 0.2s;
   width: 100%;
+  background: #ffffff;
+}
+
+.novac-input.with-icon {
+  padding-left: 44px;
 }
 
 .novac-input:focus {
   outline: none;
   border-color: #9ec03a;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  box-shadow: 0 0 0 3px rgba(205, 223, 154, 0.2);
 }
 
 .novac-input.error {
-  border-color: #ef4444;
+  border-color: #e34a4a;
 }
 
 .novac-input.error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 3px rgba(227, 74, 74, 0.15);
 }
 
 .novac-input:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .novac-error-text {
-  font-size: 13px;
-  color: #ef4444;
+  font-size: 12px;
+  color: #e34a4a;
   margin-top: -4px;
 }
 
 /* Buttons */
 .novac-submit-btn {
-  padding: 14px 24px;
-  background-color: #9ec03a;
-  color: #ffffff;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #e6f0b8 0%, #dbe89f 100%);
+  color: #5a6c3a;
   border: none;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 50px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .novac-submit-btn:hover {
-  background-color: #059669;
+  background: linear-gradient(135deg, #dbe89f 0%, #cddf9a 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 192, 58, 0.2);
 }
 
 .novac-submit-btn:active {
@@ -272,7 +344,8 @@
 }
 
 .novac-submit-btn:disabled {
-  background-color: #9ca3af;
+  background: #e5e7eb;
+  color: #9ca3af;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -518,12 +591,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #6b7280;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #e6f0b8 0%, #dbe89f 100%);
+  border-radius: 20px;
+  color: #4b5563;
   font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .novac-lock-icon {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Error state */
@@ -533,51 +611,103 @@
   color: #6b7280;
 }
 
+/* Payment Failed Screen */
+.novac-failed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.novac-failed-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #fee2e2;
+  border: 4px solid #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.novac-failed-icon-inner {
+  font-size: 40px;
+  color: #ef4444;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.novac-failed-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.novac-failed-message {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.novac-failed-submessage {
+  font-size: 14px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
 /* PIN input styles */
+.novac-pin-form {
+  padding: 20px 0;
+}
+
 .novac-pin-inputs {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   justify-content: center;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 20px;
 }
 
 .novac-pin-cell {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
-  border: 2px solid #dbeaa8; /* soft green */
+  border: 2px solid #cddf9a;
   background: #ffffff;
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   color: #111827;
   outline: none;
-  transition: all 0.12s ease-in-out;
+  transition: all 0.15s ease-in-out;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .novac-pin-cell::placeholder {
-  color: rgba(17,24,39,0.25);
+  color: rgba(17, 24, 39, 0.2);
 }
 
 .novac-pin-cell:focus {
-  border-color: #9ec03a; /* vivid green */
-  box-shadow: 0 4px 12px rgba(158,192,58,0.12);
+  border-color: #9ec03a;
+  box-shadow: 0 0 0 3px rgba(205, 223, 154, 0.25);
 }
 
 .novac-pin-cell.error {
-  border-color: #ef4444;
-  box-shadow: 0 4px 12px rgba(239,68,68,0.08);
+  border-color: #e34a4a;
+  box-shadow: 0 0 0 3px rgba(227, 74, 74, 0.15);
 }
 
 /* Make inputs compact on smaller screens */
 @media (max-width: 420px) {
   .novac-pin-cell {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
   }
 }
 
@@ -585,7 +715,8 @@
 .novac-pin-form .novac-label {
   text-align: center;
   margin-bottom: 10px;
-  color: #374151;
+  color: #6b7280;
+  font-size: 14px;
 }
 
 /* Slight spacing for submit button when used below pin inputs */
@@ -593,6 +724,7 @@
   max-width: 360px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 24px;
 }
 
 /* Responsive */
@@ -602,25 +734,32 @@
     max-height: 95vh;
   }
 
+  .novac-modal-header {
+    padding: 20px 20px 36px;
+  }
+
   .novac-title {
-    font-size: 20px;
+    font-size: 13px;
   }
 
   .novac-amount {
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .novac-tabs {
-    padding: 0 12px;
+    padding: 12px 16px;
+    gap: 6px;
   }
 
   .novac-tab {
-    padding: 12px 8px;
-    font-size: 12px;
+    padding: 10px 12px;
+    font-size: 13px;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .novac-tab-icon {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .novac-tab-content {
@@ -641,6 +780,12 @@
 
   .novac-button-group {
     flex-direction: column;
+  }
+
+  .novac-test-banner {
+    margin: 12px 12px 0;
+    padding: 10px 12px;
+    font-size: 12px;
   }
 }
 
