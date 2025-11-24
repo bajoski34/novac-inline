@@ -120,7 +120,7 @@ Download `dist/novac-inline.js` and include it in your HTML:
 ### Basic Payment
 
 ```javascript
-const payment = new NovacInline({
+const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
@@ -133,7 +133,7 @@ payment.open();
 ### With Customer Details
 
 ```javascript
-const payment = new NovacInline({
+const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
@@ -149,7 +149,7 @@ payment.open();
 ### Custom Payment Methods
 
 ```javascript
-const payment = new NovacInline({
+const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
@@ -162,7 +162,7 @@ payment.open();
 ### With Metadata
 
 ```javascript
-const payment = new NovacInline({
+const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
@@ -179,7 +179,7 @@ payment.open();
 ### Handling Callbacks
 
 ```javascript
-const payment = new NovacInline({
+const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
@@ -287,10 +287,7 @@ if (window.location.protocol !== 'https:' && !isLocalhost) {
 Recommended CSP headers:
 
 ```html
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self' https://api.novacpayment.com; 
-               script-src 'self' 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.novacpayment.com; img-src 'self' https://api.novacpayment.com https://*.novacpayment.com;; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
 ```
 
 ### Sensitive Data Handling
