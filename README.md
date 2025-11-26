@@ -248,18 +248,6 @@ Features:
 
 ### USSD Payment
 
-Supported banks:
-- GTBank (*737#)
-- Access Bank (*901#)
-- Zenith Bank (*966#)
-- UBA (*919#)
-- First Bank (*894#)
-- Fidelity Bank (*770#)
-- Sterling Bank (*822#)
-- Unity Bank (*7799#)
-- Wema Bank (*945#)
-- Polaris Bank (*833#)
-
 ## Security Considerations
 
 ### Input Sanitization
