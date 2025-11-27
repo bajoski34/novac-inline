@@ -68,7 +68,7 @@ Download `dist/novac-inline.js` and include it in your HTML:
         email: 'customer@example.com',
         amount: 15000,
         currency: 'NGN',
-        
+        redirectUrl: 'https://example.com/payment-success',
         onSuccess: function(response) {
           console.log('Payment successful:', response);
         },
