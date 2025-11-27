@@ -124,6 +124,9 @@ class Novac {
 
     // Call onClose callback
     if (this.config && this.config.onClose) {
+      if(this.config.redirectUrl) {
+        window.location.href = this.config.redirectUrl;
+      }
       this.config.onClose();
     }
   }

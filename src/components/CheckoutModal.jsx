@@ -63,7 +63,7 @@ const CheckoutModal = ({ config, onClose }) => {
     }
 
     if (config.redirectUrl) {
-      window.location.href = config.redirectUrl;
+      window.location.href = config.redirectUrl + '?transactionReference=' + initialResponse?.data?.transactionReference + '&status=success';
     }
   }
 
@@ -110,7 +110,7 @@ const CheckoutModal = ({ config, onClose }) => {
           </div>
           <button
             className="novac-close-btn"
-            onClick={onClose}
+            onClick={config.redirectUrl ? handleRedirect :onClose}
             disabled={isProcessing}
             aria-label="Close"
           >
