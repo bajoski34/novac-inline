@@ -42,9 +42,9 @@ const handleResponse = async (res) => {
  * Request wrapper (acts as middleware)
  * @param {Object} opts
  * @param {string} opts.path - endpoint path starting with '/'
- * @param {string} [opts.method='GET']
- * @param {Object} [opts.body]
- * @param {string} [opts.publicKey]
+ * @param {string} [opts.method='GET'] - HTTP method
+ * @param {Object} [opts.body] - request body for POST/PUT
+ * @param {string} [opts.publicKey] - public key for Authorization header
  */
 const request = async ({ path, method = 'GET', body, publicKey }) => {
   const init = {

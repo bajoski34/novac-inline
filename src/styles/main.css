@@ -91,13 +91,12 @@
 
 /* Modal header */
 .novac-modal-header {
-  background: linear-gradient(135deg, #ff9d00 0%, #f7941d 100%);
+  background: #ffffff;
   border-radius: 8px 8px 0 0;
-  padding: 24px 24px 40px;
+  padding: 24px;
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .novac-modal-header::after {
@@ -117,39 +116,42 @@
 }
 
 .novac-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
   margin-bottom: 4px;
 }
 
 .novac-amount {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
-  color: #1fb07f;
-  margin: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: #111827;
+  margin-bottom: 8px;
 }
 
 .novac-close-btn {
-  background: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #ffffff;
   border: none;
-  font-size: 24px;
-  color: #ffffff;
+  font-size: 20px;
+  color: #6b7280;
   cursor: pointer;
   padding: 4px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 50%;
   transition: all 0.2s;
-  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .novac-close-btn:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .novac-close-btn:disabled {
@@ -168,8 +170,8 @@
 }
 
 .novac-email {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  color: #6b7280;
   margin-bottom: 0;
 }
 
@@ -945,4 +947,251 @@ select.novac-bank-select {
 
 .novac-ussd-code__expiry {
   text-align: center;
+}
+
+/* Payment action area for popup */
+.payment-info {
+  text-align: center;
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.payment-info .amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.payment-info .currency {
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.payment-info .value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.payment-info .description {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.payment-action {
+  padding: 24px;
+  text-align: center;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #b0c33e 0%, #9ec03a 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(158, 192, 58, 0.2);
+  margin-bottom: 16px;
+}
+
+.pay-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(158, 192, 58, 0.3);
+}
+
+.pay-button:active {
+  transform: translateY(0);
+}
+
+.pay-button:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.security-note {
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.loading {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #b0c33e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+.loading p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* iframe overlay styles */
+.novac-iframe-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  animation: fadeIn 0.3s ease-in-out;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.novac-iframe {
+  width: 90vw;
+  max-width: 480px;
+  height: 600px;
+  border: none;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+  margin: 0;
+}
+
+/* Slim, muted scrollbars for iframe and modal containers */
+.novac-iframe,
+.novac-modal {
+  scrollbar-width: thin;
+  scrollbar-color: #b6c2d5 #eef1f7;
+}
+
+.novac-iframe::-webkit-scrollbar,
+.novac-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.novac-iframe::-webkit-scrollbar-track,
+.novac-modal::-webkit-scrollbar-track {
+  background: #eef1f7;
+  border-radius: 999px;
+}
+
+.novac-iframe::-webkit-scrollbar-thumb,
+.novac-modal::-webkit-scrollbar-thumb {
+  background: #b6c2d5;
+  border-radius: 999px;
+  border: 2px solid #eef1f7;
+}
+
+.novac-iframe::-webkit-scrollbar-thumb:hover,
+.novac-modal::-webkit-scrollbar-thumb:hover {
+  background: #9daac0;
+}
+
+.novac-iframe-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 18px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 1000000;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.novac-iframe-close-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  color: #374151;
+  transform: scale(1.05);
+}
+
+.novac-iframe-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  padding: 60px 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 90vw;
+  max-width: 480px;
+  height: auto;
+  min-height: 300px;
+  animation: slideUp 0.3s ease-out;
+  margin: 0;
+}
+
+.novac-iframe-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #b0c33e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20px;
+}
+
+.novac-iframe-loading p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .novac-iframe {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 80px);
+    max-height: 600px;
+    border-radius: 8px;
+    margin: 0;
+  }
+  
+  .novac-iframe-loading {
+    width: calc(100vw - 40px);
+    max-height: calc(100vh - 80px);
+    border-radius: 8px;
+    padding: 40px 20px;
+    margin: 0;
+  }
+  
+  .novac-iframe-close-btn {
+    top: 15px;
+    right: 15px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
 }
