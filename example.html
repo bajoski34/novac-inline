@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.novacpayment.com; img-src 'self' https://api.novacpayment.com https://*.novacpayment.com;; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.novacpayment.com; frame-src 'self' https://*.novacpayment.com; img-src 'self' https://api.novacpayment.com https://*.novacpayment.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>Novac Inline Payment - Example</title>
   <style>
     * {
@@ -175,27 +175,23 @@
   <script src="dist/novac-inline.js"></script>
 
   <script>
-    // Initialize payment when button is clicked
+    // Initialize payment when button is clicked.
     document.getElementById('payButton').addEventListener('click', function() {
-      // Create new payment instance
+      // Create new payment instance.
       const payment = new Novac({
-        publicKey: 'nc_testpk_akf34p2rjegw6fn4fkvw275u5lkb5dxrc3ni',
+        publicKey: 'nc_testpk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
         email: 'customer@example.com',
         amount: 500,
         currency: 'NGN',
         customerName: 'John Doe',
         customerPhone: '+2348012345678',
         reference: 'TXN_' + Date.now(),
-        redirectUrl: 'https://example.com/payment-success',
-        // Optional: Specify which payment methods to show. Default is all methods.
+        redirectUrl: 'https://google.com',
         paymentMethods: ['card', 'bank_transfer', 'ussd'],
-        
-        // Optional: Add custom metadata
         metadata: {
           productId: '12345',
           productName: 'Sample Product'
         },
-
         customization: {
           title: 'Complete Your Payment',
           description: 'Pay ₦15,000 for Sample Product',
@@ -203,8 +199,6 @@
           // background: '#d42409',
           // color: '#ffffff'
         },
-
-        // Callback when payment is successful
         onSuccess: function(response) {
           console.log('Payment successful:', response);
           const resultDiv = document.getElementById('result');
@@ -214,12 +208,7 @@
             Reference: ${response.reference}<br>
             Status: ${response.status}
           `;
-          
-          // Here you would typically verify the payment on your backend
-          // and update your database
         },
-
-        // Callback when payment fails
         onError: function(error) {
           console.error('Payment error:', error);
           const resultDiv = document.getElementById('result');
@@ -229,14 +218,11 @@
             ${error.message}
           `;
         },
-
-        // Callback when modal is closed
         onClose: function() {
           console.log('Payment modal closed');
         }
       });
-
-      // Open the payment modal
+      // Open the payment modal.
       payment.open();
     });
   </script>
