@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+dist
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Documentation
+docs
+*.md
+
+# Testing
+coverage
+.jest
+jest.config.js
+
+# Config files
+webpack.config.js
+.eslintrc
+.eslintignore
+tsconfig.json
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
