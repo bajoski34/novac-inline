@@ -1,4 +1,4 @@
-# Novac Inline Payment 
+# Novac Inline Payment
 
 A JavaScript inline script for seamless Novac payment integration with custom checkout. Built with React, this library provides a secure and customizable payment experience with support for multiple payment methods.
 
