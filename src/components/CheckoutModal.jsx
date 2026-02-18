@@ -19,19 +19,19 @@ const CheckoutModal = ({ config, onClose }) => {
     tabs.push({ id: 'ussd', label: 'USSD', icon: '📱' });
   }
 
-  const handlePaymentSuccess = (response) => {
-    setIsProcessing(false);
-    if (config.redirectUrl) {
-      handleRedirect()
-    }
-    config.onSuccess(response);
-    setTimeout(() => onClose(), 1500);
-  };
-
-  const handlePaymentError = (error) => {
-    setIsProcessing(false);
-    config.onError(error);
-  };
+  // const handlePaymentSuccess = (response) => {
+  //   setIsProcessing(false);
+  //   if (config.redirectUrl) {
+  //     handleRedirect()
+  //   }
+  //   config.onSuccess(response);
+  //   setTimeout(() => onClose(), 1500);
+  // };
+  //
+  // const handlePaymentError = (error) => {
+  //   setIsProcessing(false);
+  //   config.onError(error);
+  // };
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget && !isProcessing) {
@@ -67,30 +67,43 @@ const CheckoutModal = ({ config, onClose }) => {
 
   useEffect(() => {
     let isMounted = true;
+    let hasInitialized = false;
 
     const init = async () => {
-      const full_name = (config.customerName || '').split(' ');
-      const initiateResponse = await initiatePaymentRequest({
-        publicKey: config.publicKey,
-        transactionReference: config.reference || generateTransactionId(),
-        amount: config.amount,
-        currency: config.currency,
-        // redirectUrl: config.redirectUrl,
-        checkoutCustomerData: {
-          email: config.email,
-          firstName: full_name[0] || 'Anonymous',
-          lastName: full_name[1] || 'Anonymous',
-          phoneNumber: config.customerPhone || ''
-        },
-        checkoutCustomizationData: {
-          logoUrl: config.customization?.logoUrl || '',
-          checkoutModalTitle: config.customization?.title || 'Novac Payment',
-          paymentDescription: config.customization?.description || 'Complete your payment securely'
-        }
-      });
+      // Prevent multiple concurrent initialization requests
+      if (hasInitialized) return;
+      hasInitialized = true;
 
-      if (isMounted) {
-        setInitialResponse(initiateResponse);
+      try {
+        const full_name = (config.customerName || '').split(' ');
+        const initiateResponse = await initiatePaymentRequest({
+          publicKey: config.publicKey,
+          transactionReference: config.reference || generateTransactionId(),
+          amount: config.amount,
+          currency: config.currency,
+          // redirectUrl: config.redirectUrl,
+          checkoutCustomerData: {
+            email: config.email,
+            firstName: full_name[0] || 'Anonymous',
+            lastName: full_name[1] || 'Anonymous',
+            phoneNumber: config.customerPhone || ''
+          },
+          checkoutCustomizationData: {
+            logoUrl: config.customization?.logoUrl || '',
+            checkoutModalTitle: config.customization?.title || 'Novac Payment',
+            paymentDescription: config.customization?.description || 'Complete your payment securely'
+          }
+        });
+
+        if (isMounted) {
+          setInitialResponse(initiateResponse);
+        }
+      } catch (error) {
+        // Log error but don't fail silently
+        console.error('Failed to initiate payment request:', error);
+        if (isMounted) {
+          config.onError?.(error);
+        }
       }
     };
 
@@ -99,7 +112,7 @@ const CheckoutModal = ({ config, onClose }) => {
     return () => {
       isMounted = false;
     };
-  }, [config]);
+  }, [config.publicKey, config.reference, config.amount, config.currency, config.email, config.customerName, config.customerPhone, config.customization, config.onError]);
 
   useEffect(() => {
     if (!startVerifying || !initialResponse?.data?.transactionReference) return undefined;
